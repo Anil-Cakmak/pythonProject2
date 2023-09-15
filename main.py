@@ -61,7 +61,7 @@ def one_hot_encoder(dataframe, categorical_cols, drop_first=False):
     return dataframe
 
 
-@st.cache
+@st.cache(ttl=24*60*60)
 def outlier_thresholds(dataframe, col_name, q1=0.25, q3=0.75):
     quartile1 = dataframe[col_name].quantile(q1)
     quartile3 = dataframe[col_name].quantile(q3)
@@ -71,14 +71,14 @@ def outlier_thresholds(dataframe, col_name, q1=0.25, q3=0.75):
     return low_limit, up_limit
 
 
-@st.cache
+@st.cache(ttl=24*60*60)
 def replace_with_thresholds(dataframe, variable):
     low_limit, up_limit = outlier_thresholds(dataframe, variable)
     dataframe.loc[(dataframe[variable] < low_limit), variable] = low_limit
     dataframe.loc[(dataframe[variable] > up_limit), variable] = up_limit
 
 
-@st.cache
+@st.cache(ttl=24*60*60)
 def data_prep(dataframe):
     # Tüketilen kısımlarına göre item sınıflandırması
 
@@ -240,9 +240,9 @@ user_country = user_input_col1.selectbox(label="Ülke",
 
 user_item = user_input_col2.selectbox(label="Ürün", options=np.sort(df[df.country == user_country]["item"].unique()))
 
-user_pest_value = user_input_col1.slider(label="Pestisit(Ton)", min_value=0., max_value=40., step=0.1)
+user_pest_value = user_input_col1.slider(label="Pestisit(Ton)", min_value=0., max_value=40., step=0.5)
 
-user_avg_temp = user_input_col2.slider(label="Sıcaklık(Celsius)", min_value=-10., max_value=35., step=0.1)
+user_avg_temp = user_input_col2.slider(label="Sıcaklık(Celsius)", min_value=-10., max_value=35., step=0.5)
 
 user_avg_pre = user_input_col1.number_input(label="Yağış(mm)", min_value=50., max_value=3500., value=1000., step=50.)
 
