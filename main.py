@@ -7,7 +7,7 @@ import joblib
 from sklearn.preprocessing import RobustScaler
 
 
-@st.cache
+@st.cache_data
 def grab_col_names(dataframe, cat_th=10, car_th=20):
     """
 
@@ -55,13 +55,13 @@ def grab_col_names(dataframe, cat_th=10, car_th=20):
     return cat_cols, num_cols, cat_but_car
 
 
-@st.cache
+@st.cache_data
 def one_hot_encoder(dataframe, categorical_cols, drop_first=False):
     dataframe = pd.get_dummies(dataframe, columns=categorical_cols, drop_first=drop_first)
     return dataframe
 
 
-@st.cache(ttl=24*60*60)
+@st.cache_data(ttl=24*60*60)
 def outlier_thresholds(dataframe, col_name, q1=0.25, q3=0.75):
     quartile1 = dataframe[col_name].quantile(q1)
     quartile3 = dataframe[col_name].quantile(q3)
@@ -71,14 +71,14 @@ def outlier_thresholds(dataframe, col_name, q1=0.25, q3=0.75):
     return low_limit, up_limit
 
 
-@st.cache(ttl=24*60*60)
+@st.cache_data(ttl=24*60*60)
 def replace_with_thresholds(dataframe, variable):
     low_limit, up_limit = outlier_thresholds(dataframe, variable)
     dataframe.loc[(dataframe[variable] < low_limit), variable] = low_limit
     dataframe.loc[(dataframe[variable] > up_limit), variable] = up_limit
 
 
-@st.cache(ttl=24*60*60)
+@st.cache_data(ttl=24*60*60)
 def data_prep(dataframe):
     # Tüketilen kısımlarına göre item sınıflandırması
 
