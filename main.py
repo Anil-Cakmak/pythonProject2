@@ -7,7 +7,7 @@ import joblib
 from sklearn.preprocessing import RobustScaler
 
 
-@st.cache_data
+@st.cache_data(ttl=24*60*60)
 def grab_col_names(dataframe, cat_th=10, car_th=20):
     """
 
@@ -55,7 +55,7 @@ def grab_col_names(dataframe, cat_th=10, car_th=20):
     return cat_cols, num_cols, cat_but_car
 
 
-@st.cache_data
+@st.cache_data(ttl=24*60*60)
 def one_hot_encoder(dataframe, categorical_cols, drop_first=False):
     dataframe = pd.get_dummies(dataframe, columns=categorical_cols, drop_first=drop_first)
     return dataframe
